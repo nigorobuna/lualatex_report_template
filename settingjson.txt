@@ -1,0 +1,180 @@
+{
+  
+    // LaTeX 
+     "latex-workshop.intellisense.package.enabled": true,
+     //ビルド失敗時に補助ファイル削除
+     "latex-workshop.latex.autoClean.run": "onFailed",
+     //削除する補助ファイルを追加
+     "latex-workshop.latex.clean.fileTypes": [
+         "*.aux",
+         "*.blg",
+         "*.idx",
+         "*.ind",
+         "*.lof",
+         "*.lot",
+         "*.out",
+         "*.toc",
+         "*.acn",
+         "*.acr",
+         "*.alg",
+         "*.glg",
+         "*.glo",
+         "*.gls",
+         "*.ist",
+         "*.fls",
+         "*.log",
+         "*.fdb_latexmk",
+         "*.snm",
+         "*.nav",
+         "*.dvi",
+         "*.synctex.gz"
+     ],
+     
+     //latexmkのビルドレシピ
+     "latex-workshop.latex.recipes": [
+         //bibTexを使用しない場合のレシピ
+         {
+            "name": "ptex2pdf (uplatex)*2",
+            "tools": [
+                "ptex2pdf (uplatex)",
+                "ptex2pdf (uplatex)"
+            ]
+        },
+         {
+             "name": "ptex2pdf (uplatex)*3",
+             "tools": [
+                 "ptex2pdf (uplatex)",
+                 "ptex2pdf (uplatex)",
+                 "ptex2pdf (uplatex)"
+             ]
+         },
+         //bibTexを使用する場合のレシピ
+         {
+             "name": "ptex2pdf (uplatex) -> bibtex -> ptex2pdf (uplatex) *2",
+             "tools": [
+                 "ptex2pdf (uplatex)",
+                 "pbibtex",
+                 "ptex2pdf (uplatex)",
+                 "ptex2pdf (uplatex)"
+             ]
+         },
+         //lulatexのレシピ
+         {
+            "name": "lualatex",
+            "tools": [
+            "lualatex",
+            ]
+        },
+        {
+            "name": "lua_bib",
+            "tools": [
+            "lualatex",
+            "pbibtex(ja)",
+            "lualatex",
+            "lualatex",
+            ]
+        },
+        
+        //biber
+        {
+            "name": "lualatex->biber->lualatex",
+            "tools": [
+                "lualatex",
+                "biber",
+                "lualatex"
+            ]
+        },
+     ],
+     
+     //latexmkのビルドツール
+     "latex-workshop.latex.tools": [
+         {
+             "name": "ptex2pdf (uplatex)",
+             "command": "ptex2pdf",
+             "args": [
+                 "-interaction=nonstopmode",
+                 "-l",
+                 "-u",
+                 "-ot",
+                 "-kanji=utf8 -synctex=1",
+                 "%DOC%"
+             ]
+         },
+         {
+             "name": "pbibtex",
+             "command": "pbibtex",
+             "args": [
+                 "%DOCFILE%"
+             ]
+         },
+        //lulatexのツール。ビルドがうまくいかない場合はenvが悪さしてるっぽいので
+        //この直下のlualatexって書いてるブロックだけ消すといいかも
+        {
+            "name": "lualatex",
+            "command": "lualatex",
+            "args": [
+            "--cmdx",
+            "-file-line-error",
+            "-synctex=1",
+            "-interaction=nonstopmode",
+            "-halt-on-error",
+            "-output-directory=%OUTDIR%",
+            "%DOC%"
+            ],
+            "env": {}
+        },
+        {
+            "name": "pbibtex(ja)",
+            "command": "pbibtex",
+            "args": [
+            "-kanji=utf8",
+            "%OUTDIR%/%DOCFILE%"
+            ]
+        },
+        //lulatex+biber
+        {
+            "name": "lualatex",
+            "command": "lualatex",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "%DOC%"
+            ]
+        },
+        {
+            "name": "biber",
+            "command": "biber",
+            "args": [
+                "%DOCFILE%"
+            ]
+        }
+     ],
+     
+     
+        
+    
+    
+
+ // カスタムスタイルファイルの指定
+ "latex-workshop.latex.bibtex.styleFiles": [
+    "./customstyle.bst"
+  ],
+
+
+     //これより下の設定は人それぞれかも
+     "latex-workshop.view.pdf.viewer": "tab",
+     "latex-workshop.chktex.enabled": false,
+     "latex-workshop.latex.autoBuild.run": "never",
+    "editor.minimap.enabled": false,
+     "grammarly.files.include": [
+         "**/readme.md",
+         "**/README.md",
+         "**/*.txt",
+         "**/*.tex"
+    ],
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.iconTheme": "material-icon-theme",
+    "git.autofetch": true,
+}
