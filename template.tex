@@ -1,0 +1,198 @@
+%これはlualatexを使って卒論を書く時のテンプレです。
+%独学でやってるので変になったらごめんなさい。
+
+\documentclass{ltjsreport}
+\usepackage{luatexja}
+\usepackage{fontspec}
+\usepackage{luatexja-fontspec}
+
+%==========基本設定========================================================
+\usepackage{url}
+%引用順に番号で表示、引用番号の圧縮
+\usepackage[numbers,sort&compress]{natbib}
+%\usepackage{cite} % 引用管理パッケージ。natbibとは併用不可能
+
+% 競合解決のための設定
+\let\eth\relax
+\usepackage{amssymb}
+
+% 数学フォントの設定
+\usepackage{unicode-math}
+\setmathfont{latinmodern-math.otf}  % 使用する数学フォントを指定
+
+% フォント設定
+\setmainfont{Times New Roman} % 英文フォント
+\setsansfont{Arial}          % サンセリフフォント
+\setmonofont{Courier New}    % 等幅フォント
+\setmainjfont{MS Mincho}[
+    BoldFont = MS Mincho,  % 太字もMS明朝を使用
+    BoldFeatures = {FakeBold=2.0}  % 擬似太字の強さ（デフォルトは1.0）
+] % 日本語フォントの設定
+
+%タイトルのフォント設定
+\usepackage{titlesec}
+\newfontfamily\timesroman{Times New Roman}
+% 日本語フォーマットの再設定
+\newcommand{\chapterlabel}{第\arabic{chapter}章} % 「第○章」の形式を定義
+\renewcommand{\thechapter}{\arabic{chapter}} % 数字部分のみ（目次用）
+% 見出しを明朝体に変更
+\titleformat{\chapter}{\bfseries\rmfamily\Huge}{\chapterlabel}{1em}{}
+\titleformat{\section}{\bfseries\rmfamily\Large}{\thesection}{1em}{}
+\titleformat{\subsection}{\bfseries\rmfamily\fontsize{12.3pt}{16.48pt}\selectfont}{\thesubsection}{1em}{}
+
+%\titleformat{\subsection}{\bfseries\rmfamily\normalsize}{\timesroman\thesubsection}{1em}{}
+
+% フォントサイズの設定
+\AtBeginDocument{%
+    \fontsize{11.35pt}{15.209pt}\selectfont
+}
+
+
+%biblatex の設定(biberを使うときはコメントアウト解除)
+%\usepackage[
+%    backend=biber,
+%    style=numeric,
+%    url=false,
+%    date=year,
+%    isbn=false,
+%    sorting=none,
+%    doi=false]{biblatex}
+
+%余白設定(上下はwordと一緒で左が5mm余白広い)
+\usepackage[
+    top=35.01truemm,
+    bottom=30truemm,
+    left=35truemm,
+    right=30truemm,
+    headheight=14pt,
+    footskip=12mm
+    ]{geometry}
+
+%============その他のパッケージ===============================
+
+\usepackage{amsmath,amssymb}
+\usepackage{float}
+\usepackage{fancyhdr}
+\usepackage[version=4]{mhchem}%化学記号
+\usepackage{here}%画像、表の位置固定
+\usepackage{tikz}%内部で図形描画
+\usetikzlibrary{intersections,calc,arrows.meta}
+\usepackage{tabularx}
+\usepackage[hang,small,bf]{caption}
+\usepackage[subrefformat=parens]{subcaption}
+\usepackage{siunitx}
+
+%マル2、みたいなナンバリングをするコマンド
+\newcommand{\maru}[1]{\raise0.2ex\hbox{\textcircled{\scriptsize{#1}}}}
+\newcommand{\two}{I\hspace{-1.2pt}I}
+%画像の表示方法を設定
+\renewcommand{\figurename}{Fig. }%"図"を"Fig."に変更
+\renewcommand{\tablename}{Table} % "表"を"Table"に変更
+
+\counterwithout{figure}{chapter}%Figを通し番号に設定
+\counterwithout{equation}{chapter}%数式を通し番号に設定
+\counterwithout{table}{chapter}%表を通し番号に設定
+\captionsetup{compatibility=false}
+
+\usepackage[nottoc]{tocbibind} % 参考文献を自動で目次に含める
+%================================================================
+
+%\usepackage[utf8]{inputenc}　いらんパッケージ。コメントアウト解除したらエラー出た。
+
+%==========以下biberを使うときの設定===============================
+%\usepackage[style=customstyle]{biblatex}
+% customstyle をここで指定したらバグった
+
+%\bibliography{luasoturon}これもここに置いたらバグった
+
+% ここで .bib ファイルを指定(biber使用時はコメントアウト解除。下の解除も忘れずに)
+%\addbibresource{luasoturon.bib}
+%==================================================================
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+
+
+        \vspace*{140truept}
+
+        {\Huge 卒業論文テンプレート}
+
+        \vspace{140truept}
+
+        {\Large 2025}
+
+        \vspace{30truept}
+
+        {\Large lualatex+bibtexを使用}
+
+        \vspace{10truept}
+
+        {\Large university}
+
+        \vspace{10truept}
+
+        {\Large department}
+
+        \vspace{10truept}
+
+        {\Large oganization}
+
+        \vspace{70truept}
+
+        {\Large your name}
+
+        \vspace{30truept}
+
+        {\Large student number or other infomation}
+
+    \end{center}
+\end{titlepage}
+
+%目次に表示させる節の階層深さ
+\setcounter{tocdepth}{4}
+\tableofcontents
+\clearpage
+
+
+%.bibファイルで参考文献を持ってくるときは"better bibtex"で持ってくること. 読み込みエラー出て一生更新不可能になってまう
+
+\chapter{これが章です}
+\label{chap:章}
+    \section{これがセクションです。}
+    \label{sec:セクション}
+    一応文章だけ仮置きしてレイアウト組んでおきますね
+    参考文献の表示イメージはこうです。\cite{yoshida1985}\cite{hoshino2003,okada2005,okada2023}
+
+
+        \subsection{目次に表示できる階層はここまでです。}
+        一応文章だけ仮置きしてレイアウト組んでおきますね
+
+
+
+\chapter*{数字なくても目次に表示できるよ}
+% 目次に「数字なくても目次に表示できるよ」を追加
+\addcontentsline{toc}{chapter}{数字なくても目次に表示できるよ}
+
+\section*{これは目次には出ないです}
+一応文章だけ仮置きしてレイアウト組んでおきますね
+
+
+% 参考文献の出力
+
+%biberのときはこちらのコメントアウトを解除
+%\printbibliography[title=参考文献]
+
+%pbibtexのときはこちらのコメントアウトとその下のbibliographystyleを1つ解除
+
+\bibliography{refarence}%読み込みたい.bibファイルの名前を指定
+
+%customstyle.bstを用いた引用形式を使用するときはこちらのコメントアウトを解除
+%\bibliographystyle{customstyle}
+%下はカスタムファイルを経由しない方法
+\bibliographystyle{jplain}
+
+
+
+
+\end{document}
