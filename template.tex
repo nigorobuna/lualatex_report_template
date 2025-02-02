@@ -1,24 +1,27 @@
 %これはlualatexを使って卒論を書く時のテンプレです。
 %独学でやってるので変になったらごめんなさい。
 
+\RequirePackage{fix-cm}
 \documentclass{ltjsreport}
 \usepackage{luatexja}
+%\ltjsetparameter{ jacharrange = {-2} }
 \usepackage{fontspec}
 \usepackage{luatexja-fontspec}
 
-%==========基本設定========================================================
+
 \usepackage{url}
 %引用順に番号で表示、引用番号の圧縮
 \usepackage[numbers,sort&compress]{natbib}
-%\usepackage{cite} % 引用管理パッケージ。natbibとは併用不可能
+%\usepackage{cite} % 引用管理パッケージ
 
 % 競合解決のための設定
 \let\eth\relax
 \usepackage{amssymb}
 
 % 数学フォントの設定
-\usepackage{unicode-math}
-\setmathfont{latinmodern-math.otf}  % 使用する数学フォントを指定
+%\usepackage{unicode-math}
+%\setmathfont{latinmodern-math.otf}  % 使用する数学フォントを指定
+\usepackage{mathptmx}%これでギリシャ文字がsymbolに
 
 % フォント設定
 \setmainfont{Times New Roman} % 英文フォント
@@ -36,8 +39,8 @@
 \newcommand{\chapterlabel}{第\arabic{chapter}章} % 「第○章」の形式を定義
 \renewcommand{\thechapter}{\arabic{chapter}} % 数字部分のみ（目次用）
 % 見出しを明朝体に変更
-\titleformat{\chapter}{\bfseries\rmfamily\Huge}{\chapterlabel}{1em}{}
-\titleformat{\section}{\bfseries\rmfamily\Large}{\thesection}{1em}{}
+\titleformat{\chapter}{\bfseries\rmfamily\fontsize{15.12pt}{20.26pt}\selectfont}{\chapterlabel}{1em}{}
+\titleformat{\section}{\bfseries\rmfamily\fontsize{12.3pt}{16.48pt}\selectfont}{\thesection}{1em}{}
 \titleformat{\subsection}{\bfseries\rmfamily\fontsize{12.3pt}{16.48pt}\selectfont}{\thesubsection}{1em}{}
 
 %\titleformat{\subsection}{\bfseries\rmfamily\normalsize}{\timesroman\thesubsection}{1em}{}
@@ -48,7 +51,7 @@
 }
 
 
-%biblatex の設定(biberを使うときはコメントアウト解除)
+%biblatex の設定(biber)
 %\usepackage[
 %    backend=biber,
 %    style=numeric,
@@ -62,13 +65,17 @@
 \usepackage[
     top=35.01truemm,
     bottom=30truemm,
-    left=35truemm,
+    left=30truemm,
     right=30truemm,
-    headheight=14pt,
-    footskip=12mm
+    %headheight=14pt,  % ヘッダーの高さを調整
+    %footskip=12mm     % フッターの位置を調整
     ]{geometry}
 
-%============その他のパッケージ===============================
+
+
+
+% その他のパッケージ
+
 
 \usepackage{amsmath,amssymb}
 \usepackage{float}
@@ -82,32 +89,39 @@
 \usepackage[subrefformat=parens]{subcaption}
 \usepackage{siunitx}
 
-%マル2、みたいなナンバリングをするコマンド
-\newcommand{\maru}[1]{\raise0.2ex\hbox{\textcircled{\scriptsize{#1}}}}
-\newcommand{\two}{I\hspace{-1.2pt}I}
 %画像の表示方法を設定
 \renewcommand{\figurename}{Fig. }%"図"を"Fig."に変更
 \renewcommand{\tablename}{Table} % "表"を"Table"に変更
 
 \counterwithout{figure}{chapter}%Figを通し番号に設定
-\counterwithout{equation}{chapter}%数式を通し番号に設定
-\counterwithout{table}{chapter}%表を通し番号に設定
+\counterwithout{equation}{chapter}
+\counterwithout{table}{chapter}
 \captionsetup{compatibility=false}
 
+%コマンド
+\usepackage{xparse} % xparseパッケージを使用
+\newcommand{\maru}[1]{\raise0.2ex\hbox{\textcircled{\scriptsize{#1}}}}
+\newcommand{\two}{I\hspace{-1.2pt}}
+
+% 組成のショートカット定義
+\newcommand{\mnone}{\ce{Ti-15Fe-5Mn}}
+\newcommand{\mntwo}{\ce{Ti-10Fe-10Mn}}
+\newcommand{\mnthree}{\ce{Ti-13Fe-5Mn}}
+\newcommand{\mnfour}{\ce{Ti-10Fe-5Mn}}
+
+\newcommand{\vone}{\ce{Ti-20V-35Ni}}
+\newcommand{\vtwo}{\ce{Ti-15V-40Ni}}
+\newcommand{\vthree}{\ce{Ti-10V-42Ni}}
+\newcommand{\vfour}{\ce{Ti-10V-45Ni}}
+
 \usepackage[nottoc]{tocbibind} % 参考文献を自動で目次に含める
-%================================================================
+% 文書の開始
 
-%\usepackage[utf8]{inputenc}　いらんパッケージ。コメントアウト解除したらエラー出た。
+%\usepackage[utf8]{inputenc}
+%\usepackage[style=customstyle]{biblatex}  % customstyle をここで指定
 
-%==========以下biberを使うときの設定===============================
-%\usepackage[style=customstyle]{biblatex}
-% customstyle をここで指定したらバグった
-
-%\bibliography{luasoturon}これもここに置いたらバグった
-
-% ここで .bib ファイルを指定(biber使用時はコメントアウト解除。下の解除も忘れずに)
-%\addbibresource{luasoturon.bib}
-%==================================================================
+%\bibliography{luasoturon}
+%\addbibresource{luasoturon.bib} % ここで .bib ファイルを指定(biber使用時)
 \begin{document}
 
 \begin{titlepage}
